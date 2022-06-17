@@ -1,9 +1,10 @@
 const Router = require('express');
 const router = new Router();
+const AddFieldController = require('../controllers/AddFieldController')
 
-router.post('/');
-router.get('/');
-router.delete('/');
+router.post('/', AddFieldController.create);
+router.get('/', AddFieldController.getAll);
+router.delete('/', AddFieldController.delete);
 
 
 

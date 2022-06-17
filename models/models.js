@@ -2,43 +2,43 @@ const  sequelize = require('../db');
 const {DataTypes} = require('sequelize');
 
 const User = sequelize.define('user', {
-    user_id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    user_name: {type: DataTypes.STRING, unigue: true, allowNull: false},
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+    name: {type: DataTypes.STRING, unigue: true, allowNull: false},
     email: {type: DataTypes.STRING, unigue: true, allowNull: false},
     password: {type: DataTypes.STRING, allowNull: false},
-    blocked: {type: DataTypes.BOOLEAN, allowNull: false},
+    blocked: {type: DataTypes.BOOLEAN, defaultValue: false, allowNull: false},
     role: {type: DataTypes.STRING, defaultValue: "USER", allowNull: false}
 })
 
 const Collection = sequelize.define('collection', {
-    collection_id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    collection_name: {type: DataTypes.STRING, unigue: true, allowNull: false},
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+    name: {type: DataTypes.STRING, unigue: true, allowNull: false},
     description: {type: DataTypes.STRING, allowNull: false},
     image: {type: DataTypes.STRING, allowNull: true}
 })
 
 const Subject = sequelize.define('subject', {
-    subject_id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    subject_name: {type: DataTypes.STRING, unigue: true, allowNull: false}
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+    name: {type: DataTypes.STRING, unigue: true, allowNull: false}
 })
 
 const AddFieldSet = sequelize.define('add_field_set', {
-    set_id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false}
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false}
 })
 
 const AddField = sequelize.define('add_field', {
-    subject_id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    subject_name: {type: DataTypes.STRING, unigue: true, allowNull: false}
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+    name: {type: DataTypes.STRING, unigue: true, allowNull: false}
 })
 
 const Type = sequelize.define('type', {
-    type_id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    type_name: {type: DataTypes.STRING, unigue: true, allowNull: false}
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+    name: {type: DataTypes.STRING, unigue: true, allowNull: false}
 })
 
 const Item = sequelize.define('item', {
-    item_id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    item_name: {type: DataTypes.STRING, unigue: true, allowNull: false}
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+    name: {type: DataTypes.STRING, unigue: true, allowNull: false}
 })
 
 const ItemTag = sequelize.define('item_tag', {
@@ -46,13 +46,13 @@ const ItemTag = sequelize.define('item_tag', {
 })
 
 const Tag = sequelize.define('tag', {
-    tag_id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    tag_name: {type: DataTypes.STRING, unigue: true, allowNull: false}
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+    name: {type: DataTypes.STRING, unigue: true, allowNull: false}
 })
 
 const Comment = sequelize.define('comment', {
-    comment_id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    comment_text: {type: DataTypes.STRING, unigue: true, allowNull: false}
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+    text: {type: DataTypes.STRING, unigue: true, allowNull: false}
 })
 
 const Like = sequelize.define('like', {

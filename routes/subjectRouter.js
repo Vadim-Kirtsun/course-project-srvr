@@ -1,11 +1,9 @@
 const Router = require('express');
 const router = new Router();
-
-router.post('/');
-router.get('/');
-router.delete('/');
+const SubjectController = require('../controllers/TagController')
 
 
+router.get('/', SubjectController.getAll);
 
 
 module.exports = router

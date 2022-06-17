@@ -1,10 +1,11 @@
 const Router = require('express');
 const router = new Router();
+const CollectionController = require('../controllers/CollectionController');
 
-router.post('/');
-router.get('/');
-router.get('/:id');
-router.delete('/');
+router.post('/', CollectionController.create);
+router.get('/', CollectionController.getAll);
+router.get('/:id', CollectionController.getOne);
+router.delete('/', CollectionController.delete);
 
 
 

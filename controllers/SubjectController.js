@@ -1,15 +1,12 @@
+const { Subject } = require('../models/models');
+const ApiError = require('../error/ApiError');
+
+
 class SubjectController {
 
-    async create(reg, res) {
-
-    }
-
     async getAll(reg, res) {
-
-    }
-
-    async delete(reg, res) {
-
+        const subjects = await Subject.findAll();
+        return res.json(subjects);
     }
 }
 
