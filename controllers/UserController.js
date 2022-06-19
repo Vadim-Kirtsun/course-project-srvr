@@ -14,13 +14,15 @@ const generateJwt = (id, email, role) => {
 class UserController {
     async registration(reg, res, next) {
         const {name, email, password} = reg.body;
-        if (!email || !password) {
-            return next(ApiError.badRequest('Неправильный email или password!'));
-        };
+        if (!name || !email || !password) {
+            return next(ApiError.badRequest('Неправильный name, email или password!'));
+        }
+
         const candidate = await User.findOne({where: {email}});
         if (candidate) {
             return next(ApiError.badRequest('Пользователь с таким именем уже существует!'));
-        };
+        }
+
         const hashPassword = await bcrypt.hash(password, 3);
         const user = await User.create({name, email, password: hashPassword});
         console.log(user);
@@ -33,21 +35,106 @@ class UserController {
         const user = await User.findOne({where: {email}});
         if (!user) {
             return next(ApiError.internal("Пользователь не найден!"));
-        };
+        }
+
         let comparePassword = bcrypt.compareSync(password, user.password);
         if (!comparePassword) {
             return next(ApiError.internal("Указан неверный пароль!"));
-        };
+        }
+
         const token = generateJwt(user.id, user.email, user.password);
         return res.json({token});
 
     };
 
-    async check(reg, res, next) {
+    async check(reg, res) {
         const token = generateJwt(reg.user.id, reg.user.email, reg.user.role);
         return res.json({token});
     };
-};
+
+    async getUsers(reg, res) {
+        const users = await User.findAll({
+            order: [
+                ['id', 'ASC']
+            ]
+        });
+        return res.json(users);
+    }
+
+    async blockUser(reg, res) {
+        const selectedIds = reg.body;
+        const response = await User.findAll({
+            where: {id: selectedIds}
+        }).then((result, err) => {
+            if (result) {
+                result.forEach(u => {
+                    u.blocked = true;
+                    u.save();
+                })
+                return {message: "All selected users had been blocked"};
+            }
+            if (err) {
+                return {err: err};
+            }
+        });
+        return res.json(response);
+    }
+
+    async unblockUser(reg, res) {
+        const selectedIds = reg.body;
+        const response = await User.findAll({
+            where: {id: selectedIds}
+        }).then((result, err) => {
+            if (err) {
+                return {err: err};
+            }
+
+            if (result) {
+                result.forEach(u => {
+                    u.blocked = false;
+                    u.save();
+                })
+                return {message: "All selected users had been unblocked"};
+            }
+        });
+        return res.json(response);
+    }
+
+    async deleteUser(reg, res) {
+        const selectedIds = reg.body;
+        const user = await User.destroy({
+            where: {id: selectedIds}
+        }).then((result, err) => {
+            if (err) {
+                return {err: err};
+            }
+            if (result) {
+                return {message: "All selected users had been deleted"};
+            }
+        });
+        return res.json(user);
+    }
+
+    async changeRole(reg, res) {
+        const {id, role} = reg.body;
+        const response = await User.findOne({
+            where: {id: id}
+        }).then((result, err) => {
+            if (err) {
+                return {err: err};
+            }
+            if (result) {
+                result.role = role;
+                result.save();
+            }
+
+            return {message: "User had been changed"};
+        });
+        return res.json(response);
+    }
+}
+
+
 
 
 module.exports = new UserController();
