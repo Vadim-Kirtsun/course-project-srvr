@@ -1,9 +1,9 @@
 const Router = require('express');
 const router = new Router();
 const CollectionController = require('../controllers/CollectionController');
-const checkRole = require('../middleware/checkRoleMiddleware')
+const authMiddleware = require('../middleware/authMiddleware');
 
-router.post('/', checkRole('ADMIN' || 'USER'), CollectionController.create);
+router.post('/create', authMiddleware, CollectionController.create);
 router.get('/', CollectionController.getAll);
 router.get('/:id', CollectionController.getOne);
 router.delete('/', CollectionController.delete);
