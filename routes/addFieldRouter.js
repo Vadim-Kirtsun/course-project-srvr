@@ -1,9 +1,10 @@
 const Router = require('express');
 const router = new Router();
 const AddFieldController = require('../controllers/AddFieldController')
+const authMiddleware = require('../middleware/authMiddleware');
 
-router.post('/', AddFieldController.create);
-router.get('/', AddFieldController.getAll);
+router.post('/create', authMiddleware, AddFieldController.create);
+router.get('/getFields', AddFieldController.getAll);
 router.delete('/', AddFieldController.delete);
 
 

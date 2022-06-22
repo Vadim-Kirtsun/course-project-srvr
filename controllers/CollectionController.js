@@ -1,4 +1,4 @@
-const {Collection} = require('../models/models');
+const {Collection, AddField} = require('../models/models');
 const ApiError = require('../error/ApiError');
 const uuid = require('uuid');
 const path = require('path');
@@ -6,7 +6,7 @@ const path = require('path');
 class CollectionController {
 
     async create(reg, res, next) {
-        console.log(reg);
+        console.log(reg.body);
         try{
             const {name, description, subject} = reg.body;
 
@@ -23,7 +23,7 @@ class CollectionController {
     }
 
     async getAll(reg, res) {
-        const collections = await Collection.findAll();
+        const collections = await Collection.findAll({include: AddField});
         return res.json(collections);
     }
 

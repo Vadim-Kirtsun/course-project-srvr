@@ -4,8 +4,8 @@ const ApiError = require('../error/ApiError');
 class AddFieldSetController {
 
     async create(reg, res) {
-        const {name} = reg.body;
-        const addFieldSet = await AddFieldSet.create({name});
+        const {currentCollectionId} = reg.body;
+        const addFieldSet = await AddFieldSet.create({collectionId: currentCollectionId});
         return res.json(addFieldSet);
     }
 

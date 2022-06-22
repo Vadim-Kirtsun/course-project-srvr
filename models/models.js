@@ -18,10 +18,6 @@ const Collection = sequelize.define('collection', {
     image: {type: DataTypes.STRING, allowNull: true}
 })
 
-const AddFieldSet = sequelize.define('add_field_set', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false}
-})
-
 const AddField = sequelize.define('add_field', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
     name: {type: DataTypes.STRING, unique: true, allowNull: false}
@@ -64,11 +60,8 @@ Comment.belongsTo(User)
 Collection.hasMany(Item)
 Item.belongsTo(Collection)
 
-Collection.hasMany(AddFieldSet)
-AddFieldSet.belongsTo(Collection)
-
-AddFieldSet.hasMany(AddField)
-AddField.belongsTo(AddFieldSet)
+Collection.hasMany(AddField)
+AddField.belongsTo(Collection)
 
 AddField.hasMany(Type)
 Type.belongsTo(AddField)
@@ -88,7 +81,6 @@ Item.belongsToMany(User, {through: Like})
 module.exports = {
     User,
     Collection,
-    AddFieldSet,
     AddField,
     Type,
     Item,
