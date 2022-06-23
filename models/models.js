@@ -20,12 +20,8 @@ const Collection = sequelize.define('collection', {
 
 const AddField = sequelize.define('add_field', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false}
-})
-
-const Type = sequelize.define('type', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false}
+    name: {type: DataTypes.STRING, allowNull: false},
+    type: {type: DataTypes.STRING, allowNull: false}
 })
 
 const Item = sequelize.define('item', {
@@ -63,9 +59,6 @@ Item.belongsTo(Collection)
 Collection.hasMany(AddField)
 AddField.belongsTo(Collection)
 
-AddField.hasMany(Type)
-Type.belongsTo(AddField)
-
 Item.hasMany(Comment)
 Comment.belongsTo(Item)
 
@@ -82,7 +75,6 @@ module.exports = {
     User,
     Collection,
     AddField,
-    Type,
     Item,
     ItemTag,
     Tag,

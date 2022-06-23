@@ -8,15 +8,19 @@ class CollectionController {
     async create(reg, res, next) {
         console.log(reg.body);
         try{
-            const {name, description, subject} = reg.body;
-
+            const {id,name, description, subject, image} = reg.body;
+           let collection;
+            if(id === undefined){
+                collection = await Collection.create({name, description, subject, userId: reg.user.id});
+            }else{
+                collection = await Collection.update({name, description, subject}, {where: {id}});
+            }
             /*let fileName = {};
             if(image) {
                 fileName = uuid.v4() + ".jpg";
                 image.mv(path.resolve(__dirname, '..', 'static', fileName))
             }*/
-            const collection = await Collection.create({name, description, subject, userId: reg.user.id});
-            return res.json(collection); 
+            return res.json(collection);
         } catch (e) {
             next(ApiError.badRequest(e.message));
         }

@@ -5,9 +5,13 @@ class AddFieldController {
 
     async create(reg, res) {
         const {collectionId,additionalField} = reg.body;
-        console.log(reg.body);
-        console.log(collectionId);
-        const addField = await AddField.create({name: additionalField.name, collectionId:collectionId});
+        let addField;
+        if(additionalField.id === undefined){
+            addField = await AddField.create({name: additionalField.name, type: additionalField.type, collectionId:collectionId});
+        }else{
+            addField = await AddField.update({name: additionalField.name, type: additionalField.type}, {where: {id:additionalField.id}});
+        }
+
         return res.json(addField);
     }
 
