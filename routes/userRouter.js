@@ -13,4 +13,4 @@ router.put('/deleteUser', UserController.deleteUser);
 router.put('/changeRole', UserController.changeRole);
 
 
-module.exports = router
+module.exports = router;

@@ -1,12 +1,10 @@
 const {Item} = require('../models/models');
-const ApiError = require('../error/ApiError')
-
 
 class ItemController {
 
     async create(reg, res) {
-        const {name} = reg.body;
-        const item = await Item.create({name});
+        const {name, collectionId} = reg.body;
+        const item = await Item.create({name, collectionId});
         return res.json(item);
     }
 

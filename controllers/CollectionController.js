@@ -1,4 +1,4 @@
-const {Collection, AddField} = require('../models/models');
+const {Collection, AddField, Item} = require('../models/models');
 const ApiError = require('../error/ApiError');
 const uuid = require('uuid');
 const path = require('path');
@@ -6,7 +6,6 @@ const path = require('path');
 class CollectionController {
 
     async create(reg, res, next) {
-        console.log(reg.body);
         try{
             const {id,name, description, subject, image} = reg.body;
            let collection;
@@ -34,13 +33,25 @@ class CollectionController {
     async getOne(reg, res) {
         const {id} = reg.params;
         const collection = await Collection.findOne({
-            where: {id}
+            where: {id},
+            include: [Item,AddField]
         });
         return res.json(collection);
     }
 
     async delete(reg, res) {
-
+        const {id} = reg.body;
+        const collection = await Collection.destroy({
+            where: {id}
+        }).then((result, err) => {
+            if (err) {
+                return {err: err};
+            }
+            if (result) {
+                return {message: "CollectionId had been deleted"};
+            }
+        });
+        return res.json(collection);
     }
 }
 
