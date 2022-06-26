@@ -1,10 +1,12 @@
-const {Item} = require('../models/models');
+const {Item, Tag} = require('../models/models');
 
 class ItemController {
 
     async create(reg, res) {
-        const {name, collectionId} = reg.body;
-        const item = await Item.create({name, collectionId});
+        console.log(reg.body);
+        const {name, tags, collectionId} = reg.body;
+        const item = await Item.create({name, collectionId, tags},
+            {include: [Tag]});
         return res.json(item);
     }
 
