@@ -1,12 +1,16 @@
 const {Item, Tag} = require('../models/models');
 
 class ItemController {
-
     async create(reg, res) {
-        console.log(reg.body);
         const {name, tags, collectionId} = reg.body;
-        const item = await Item.create({name, collectionId, tags},
-            {include: [Tag]});
+         const item = await Item.create({name, collectionId}).then(it => {
+             it.setTags([]);
+             for (let i = 0; i< tags.length;i++) {
+                 Tag.findOrCreate({where: tags[i]}).then(tg => {
+                     it.addTag(tg[0]);
+                 });
+             };
+         });
         return res.json(item);
     }
 

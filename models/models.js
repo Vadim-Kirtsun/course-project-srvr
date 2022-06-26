@@ -26,12 +26,10 @@ const AddField = sequelize.define('add_field', {
 
 const Item = sequelize.define('item', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false}
+    name: {type: DataTypes.STRING, allowNull: false}
 })
 
-const ItemTag = sequelize.define('item_tag', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false}
-})
+const ItemTag = sequelize.define('item_tag', {})
 
 const Tag = sequelize.define('tag', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
@@ -40,7 +38,7 @@ const Tag = sequelize.define('tag', {
 
 const Comment = sequelize.define('comment', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
-    text: {type: DataTypes.STRING, unique: true, allowNull: false}
+    text: {type: DataTypes.STRING, allowNull: false}
 })
 
 const Like = sequelize.define('like', {
@@ -61,9 +59,6 @@ AddField.belongsTo(Collection)
 
 Item.hasMany(Comment)
 Comment.belongsTo(Item)
-
-Tag.hasMany(ItemTag)
-ItemTag.belongsTo(Tag)
 
 Item.belongsToMany(Tag, {through: ItemTag})
 Tag.belongsToMany(Item, {through: ItemTag})
