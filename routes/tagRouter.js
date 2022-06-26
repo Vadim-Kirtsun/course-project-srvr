@@ -1,8 +1,9 @@
 const Router = require('express');
 const router = new Router();
-const TagController = require('../controllers/TagController')
+const TagController = require('../controllers/TagController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-router.post('/', TagController.create);
+router.post('/', authMiddleware, TagController.create);
 router.get('/', TagController.getAll);
 router.delete('/', TagController.delete);
 
