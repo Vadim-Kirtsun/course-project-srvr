@@ -5,23 +5,18 @@ class ItemController {
         const {name, tags, collectionId} = reg.body;
         let {id} = reg.body;
         let arr = [];
-        if(id == undefined){
+        if(id === undefined){
             const newItem = await Item.create({name, collectionId})
             id = newItem.id;
         }
 
-        console.log(id);
         for (let i = 0; i< tags.length;i++) {
             let tag = await Tag.findOrCreate({where: tags[i]});
-            console.log(tag[0]);
             arr.push(tag[0]);
         };
-        console.log(arr);
 
         const item = await Item.findOne({where: {id: id}, include:Tag});
-        console.log(item);
-            item.setTags(arr);
-        console.log(item.tags);
+        item.setTags(arr);
 
         return res.json(id);
     }

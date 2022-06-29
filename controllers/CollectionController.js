@@ -1,25 +1,18 @@
 const {Collection, AddField, Item} = require('../models/models');
 const ApiError = require('../error/ApiError');
-const uuid = require('uuid');
-const path = require('path');
 const {Tag} = require("../models/models");
 
 class CollectionController {
 
     async create(reg, res, next) {
         try{
-            const {id,name, description, subject, image} = reg.body;
+            const {id, name, description, subject, image} = reg.body;
            let collection;
             if(id === undefined){
-                collection = await Collection.create({name, description, subject, userId: reg.user.id});
+                collection = await Collection.create({name, description, subject, image, userId: reg.user.id});
             }else{
-                collection = await Collection.update({name, description, subject}, {where: {id}});
+                collection = await Collection.update({name, description, subject, image}, {where: {id}});
             }
-            /*let fileName = {};
-            if(image) {
-                fileName = uuid.v4() + ".jpg";
-                image.mv(path.resolve(__dirname, '..', 'static', fileName))
-            }*/
             return res.json(collection);
         } catch (e) {
             next(ApiError.badRequest(e.message));
