@@ -24,6 +24,16 @@ class CollectionController {
         return res.json(collections);
     }
 
+    async getAllUser(reg, res) {
+        const {id} = reg.params;
+        console.log(id)
+        const collections = await Collection.findAll({
+            where: {userId: id},
+            include: AddField
+        });
+        return res.json(collections);
+    }
+
     async getOne(reg, res) {
         const {id} = reg.params;
         const collection = await Collection.findOne({
