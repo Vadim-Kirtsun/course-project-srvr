@@ -1,6 +1,6 @@
 const {Collection, AddField, Item} = require('../models/models');
 const ApiError = require('../error/ApiError');
-const {Tag} = require("../models/models");
+const {Tag, Comment} = require("../models/models");
 
 class CollectionController {
 
@@ -38,7 +38,7 @@ class CollectionController {
         const {id} = reg.params;
         const collection = await Collection.findOne({
             where: {id},
-            include: [{model:Item, include: Tag},AddField]
+            include: [{model:Item, include: [Tag, Comment]},AddField]
         });
         return res.json(collection);
     }
@@ -52,7 +52,7 @@ class CollectionController {
                 return {err: err};
             }
             if (result) {
-                return {message: "CollectionId had been deleted"};
+                return {message: "Collection had been deleted"};
             }
         });
         return res.json(collection);
