@@ -24,6 +24,11 @@ const AddField = sequelize.define('add_field', {
     type: {type: DataTypes.STRING, allowNull: false}
 })
 
+const AddFieldValue = sequelize.define('add_field_value', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
+    value: {type: DataTypes.STRING, allowNull: false}
+})
+
 const Item = sequelize.define('item', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false},
     name: {type: DataTypes.STRING, allowNull: false}
@@ -60,8 +65,14 @@ AddField.belongsTo(Collection)
 Item.hasMany(Comment)
 Comment.belongsTo(Item)
 
+Item.hasMany(AddFieldValue)
+AddFieldValue.belongsTo(Item)
+
 Item.belongsToMany(Tag, {through: ItemTag})
 Tag.belongsToMany(Item, {through: ItemTag})
+
+Item.belongsToMany(AddField, {through: AddFieldValue})
+AddField.belongsToMany(Item, {through: AddFieldValue})
 
 User.belongsToMany(Item, {through: Like})
 Item.belongsToMany(User, {through: Like})
@@ -70,6 +81,7 @@ module.exports = {
     User,
     Collection,
     AddField,
+    AddFieldValue,
     Item,
     ItemTag,
     Tag,

@@ -1,5 +1,6 @@
 const {Collection, AddField, Item} = require('../models/models');
 const ApiError = require('../error/ApiError');
+const {AddFieldValue} = require("../models/models");
 const {Tag, Comment} = require("../models/models");
 
 class CollectionController {
@@ -38,7 +39,7 @@ class CollectionController {
         const {id} = reg.params;
         const collection = await Collection.findOne({
             where: {id},
-            include: [{model:Item, include: [Tag, Comment]},AddField]
+            include: [{model:Item, include: [Tag, AddFieldValue, Comment]},AddField]
         });
         return res.json(collection);
     }

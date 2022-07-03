@@ -1,22 +1,34 @@
-const {Item, Tag, Comment, AddField} = require('../models/models');
+const {Item, Tag, Comment, AddField, AddFieldValue} = require('../models/models');
 
 class ItemController {
     async create(reg, res) {
-        const {name, tags, collectionId} = reg.body;
+        const {name, tags, addFields, collectionId} = reg.body;
         let {id} = reg.body;
-        let arr = [];
+        let tagArr = [];
+        let addFieldsArr = [];
         if(id === undefined){
             const newItem = await Item.create({name, collectionId})
             id = newItem.id;
         }
 
-        for (let i = 0; i< tags.length;i++) {
-            let tag = await Tag.findOrCreate({where: tags[i]});
-            arr.push(tag[0]);
+        for (let i = 0; i< addFields.length;i++) {
+            let addField = await AddFieldValue.findOne({where: {itemId: id,addFieldId: addFields[i].addField_id}});
+            if (addField){
+                addField = await AddFieldValue.update({value: addFields[i].value}, {where: {itemId: id,addFieldId: addFields[i].addField_id}});
+            }else{
+                addField = await AddFieldValue.create({value: addFields[i].value, itemId: id,addFieldId: addFields[i].addField_id});
+            }
+            addFieldsArr.push(addField);
         };
 
-        const item = await Item.findOne({where: {id: id}, include:Tag});
-        item.setTags(arr);
+        for (let i = 0; i< tags.length;i++) {
+            let tag = await Tag.findOrCreate({where: tags[i]});
+            tagArr.push(tag[0]);
+        };
+
+        const item = await Item.findOne({where: {id: id}, include:[Tag, AddFieldValue]});
+        item.setTags(tagArr);
+        item.setAddFieldValues(addFieldsArr)
 
         return res.json(id);
     }
@@ -30,7 +42,7 @@ class ItemController {
         const {id} = reg.params;
         const item = await Item.findOne({
             where: {id},
-             include: [Tag, Comment]/*, AddField*/
+             include: [Tag, Comment, AddFieldValue]
         });
         return res.json(item);
     }
