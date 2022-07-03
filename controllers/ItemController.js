@@ -1,4 +1,4 @@
-const {Item, Tag} = require('../models/models');
+const {Item, Tag, Comment, AddField} = require('../models/models');
 
 class ItemController {
     async create(reg, res) {
@@ -27,7 +27,12 @@ class ItemController {
     }
 
     async getOne(reg, res) {
-
+        const {id} = reg.params;
+        const item = await Item.findOne({
+            where: {id},
+             include: [Tag, Comment]/*, AddField*/
+        });
+        return res.json(item);
     }
 
     async delete(reg, res) {

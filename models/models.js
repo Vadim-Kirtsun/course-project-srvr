@@ -42,7 +42,7 @@ const Comment = sequelize.define('comment', {
 })
 
 const Like = sequelize.define('like', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false}
+    id: {type: DataTypes.BOOLEAN, primaryKey: true, autoIncrement: true, allowNull: false}
 })
 
 User.hasMany(Collection)
