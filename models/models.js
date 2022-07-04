@@ -46,9 +46,7 @@ const Comment = sequelize.define('comment', {
     text: {type: DataTypes.STRING, allowNull: false}
 })
 
-const Like = sequelize.define('like', {
-    id: {type: DataTypes.BOOLEAN, primaryKey: true, autoIncrement: true, allowNull: false}
-})
+const Like = sequelize.define('like', {})
 
 User.hasMany(Collection)
 Collection.belongsTo(User)
@@ -67,6 +65,12 @@ Comment.belongsTo(Item)
 
 Item.hasMany(AddFieldValue)
 AddFieldValue.belongsTo(Item)
+
+Item.hasMany(Like)
+Like.belongsTo(Item)
+
+User.hasMany(Like)
+Like.belongsTo(User)
 
 Item.belongsToMany(Tag, {through: ItemTag})
 Tag.belongsToMany(Item, {through: ItemTag})

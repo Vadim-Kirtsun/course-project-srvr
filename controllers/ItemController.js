@@ -1,9 +1,10 @@
-const {Item, Tag, Comment, AddField, AddFieldValue} = require('../models/models');
+const {Item, Tag, Comment, AddField, AddFieldValue, Like} = require('../models/models');
 
 class ItemController {
     async create(reg, res) {
         const {name, tags, addFields, collectionId} = reg.body;
         let {id} = reg.body;
+        console.log(addFields)
         let tagArr = [];
         let addFieldsArr = [];
         if(id === undefined){
@@ -28,8 +29,6 @@ class ItemController {
 
         const item = await Item.findOne({where: {id: id}, include:[Tag, AddFieldValue]});
         item.setTags(tagArr);
-        item.setAddFieldValues(addFieldsArr)
-
         return res.json(id);
     }
 
@@ -42,7 +41,7 @@ class ItemController {
         const {id} = reg.params;
         const item = await Item.findOne({
             where: {id},
-             include: [Tag, Comment, AddFieldValue]
+             include: [Tag, Comment, AddFieldValue, AddField, Like]
         });
         return res.json(item);
     }
