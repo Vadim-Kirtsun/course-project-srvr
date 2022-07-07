@@ -7,7 +7,7 @@ router.post('/create', authMiddleware, CollectionController.create);
 router.get('/', CollectionController.getAll);
 router.get('/user/:id', CollectionController.getAllUser);
 router.get('/:id', CollectionController.getOne);
-router.put('/delete', CollectionController.delete);
+router.delete('/:id', CollectionController.delete);
 
 
 

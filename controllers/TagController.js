@@ -26,8 +26,6 @@ class TagController {
                 tag.addItems(Item.findOne({where: {id: itemId}}).dataValues);
                 tag.save();
             }*/
-
-
         };
         return res.json(tag);
     }

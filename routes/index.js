@@ -8,6 +8,7 @@ const itemRouter = require('./itemRouter');
 const addFieldRouter = require('./addFieldRouter');
 const tagRouter = require('./tagRouter');
 const typeRouter = require('./typeRouter');
+const likeRouter = require('./likeRouter');
 
 
 router.use('/user', userRouter);
@@ -17,7 +18,7 @@ router.use('/subject', subjectRouter);
 router.use('/item', itemRouter);
 router.use('/add_field', addFieldRouter);
 router.use('/tag', tagRouter);
-router.use('/type', typeRouter);
+router.use('/like', likeRouter);
 
 
 

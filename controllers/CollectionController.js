@@ -44,7 +44,7 @@ class CollectionController {
     }
 
     async delete(reg, res) {
-        const {id} = reg.body;
+        const {id} = reg.params;
         const collection = await Collection.destroy({
             where: {id}
         }).then((result, err) => {

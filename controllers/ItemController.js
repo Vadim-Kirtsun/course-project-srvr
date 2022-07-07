@@ -4,7 +4,6 @@ class ItemController {
     async create(reg, res) {
         const {name, tags, addFields, collectionId} = reg.body;
         let {id} = reg.body;
-        console.log(addFields)
         let tagArr = [];
         let addFieldsArr = [];
         if(id === undefined){
@@ -12,7 +11,7 @@ class ItemController {
             id = newItem.id;
         }
 
-        for (let i = 0; i< addFields.length;i++) {
+        for (let i = 0; i< addFields.length; i++) {
             let addField = await AddFieldValue.findOne({where: {itemId: id,addFieldId: addFields[i].addField_id}});
             if (addField){
                 addField = await AddFieldValue.update({value: addFields[i].value}, {where: {itemId: id,addFieldId: addFields[i].addField_id}});
@@ -60,6 +59,7 @@ class ItemController {
         });
         return res.json(collection);
     }
+
 }
 
 module.exports = new ItemController();

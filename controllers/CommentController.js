@@ -1,8 +1,8 @@
 const {Comment} = require('../models/models');
-const ApiError = require('../error/ApiError');
 
 
-class ItemController {
+
+class CommentController {
 
     async create(reg, res) {
         const {name} = reg.body;
@@ -25,4 +25,4 @@ class ItemController {
     }
 }
 
-module.exports = new ItemController();
+module.exports = new CommentController();
