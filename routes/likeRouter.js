@@ -2,6 +2,6 @@ const Router = require('express');
 const router = new Router();
 const  LikeController = require('../controllers/LikeController');
 
-router.post('/', LikeController.createLike);
+router.put('/', LikeController.updateLike);
 
 module.exports = router

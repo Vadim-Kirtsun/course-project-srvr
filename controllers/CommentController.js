@@ -5,9 +5,15 @@ const {Comment} = require('../models/models');
 class CommentController {
 
     async create(reg, res) {
-        const {name} = reg.body;
-        const comment = await Comment.create({name});
-        return res.json(comment);
+        const {id, content, author, avatar, userId, itemId} = reg.body;
+        console.log(reg.body);
+        /*if (id === undefined){
+            const data = await Comment.create({content, author, avatar, userId, itemId});
+            return res.json(data);
+        }*/
+
+
+
 
     }
 

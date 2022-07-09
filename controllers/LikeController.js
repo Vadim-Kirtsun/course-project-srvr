@@ -2,16 +2,14 @@ const {Like} = require('../models/models');
 
 
 class LikeController {
-    async createLike(reg, res) {
+    async updateLike(reg, res) {
         const {userId, itemId} = reg.body;
-
-        const liked = await Like.findOne({where: {userId, itemId}});
-        if (liked) {
-            return res.json({message: 'The user has already liked!'});
+        const like = await Like.findOne({where: {userId, itemId}});
+        if (like) {
+             await Like.destroy({where: {userId, itemId}});
+        } else {
+             await Like.create({userId, itemId})
         }
-
-        const like = await Like.create({userId, itemId})
-            return res.json(like);
     }
 }
 module.exports = new LikeController();

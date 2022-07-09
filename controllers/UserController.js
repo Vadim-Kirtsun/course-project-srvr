@@ -15,12 +15,12 @@ class UserController {
     async registration(reg, res, next) {
         const {name, email, password} = reg.body;
         if (!name || !email || !password) {
-            return next(ApiError.badRequest('Неправильный name, email или password!'));
+            return next(ApiError.badRequest('Wrong name, email or password!'));
         }
 
         const candidate = await User.findOne({where: {email}});
         if (candidate) {
-            return next(ApiError.badRequest('Пользователь с таким именем уже существует!'));
+            return next(ApiError.badRequest('A user with the same name already exists!'));
         }
 
         const hashPassword = await bcrypt.hash(password, 3);
@@ -33,12 +33,12 @@ class UserController {
         const {email, password} = reg.body;
         const user = await User.findOne({where: {email}});
         if (!user) {
-            return next(ApiError.internal("Пользователь не найден!"));
+            return next(ApiError.internal("User is not found!"));
         }
 
         let comparePassword = bcrypt.compareSync(password, user.password);
         if (!comparePassword) {
-            return next(ApiError.internal("Указан неверный пароль!"));
+            return next(ApiError.internal("Wrong password specified!"));
         }
 
         const token = generateJwt(user.id, user.email, user.role);

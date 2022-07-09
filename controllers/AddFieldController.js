@@ -1,5 +1,5 @@
 const {AddField} = require('../models/models');
-const ApiError = require('../error/ApiError');
+
 
 class AddFieldController {
 
@@ -11,7 +11,6 @@ class AddFieldController {
         }else{
             addField = await AddField.update({name: additionalField.name, type: additionalField.type}, {where: {id:additionalField.id}});
         }
-
         return res.json(addField);
     }
 
