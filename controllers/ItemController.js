@@ -1,4 +1,5 @@
-const {Item, Tag, Comment, AddField, AddFieldValue, Like} = require('../models/models');
+
+const {Item, User, Tag, Collection,Comment, AddField, AddFieldValue, Like} = require('../models/models');
 
 class ItemController {
     async create(reg, res) {
@@ -33,6 +34,24 @@ class ItemController {
 
     async getAll(reg, res) {
         const items = await Item.findAll();
+        return res.json(items);
+    }
+
+    async getLatest(reg, res) {
+        const items = await Item.findAll({order:[["createdAt","DESC"]], limit: 5,
+            include:[{
+                attributes: ["name"],
+                model: Collection,
+                duplicating: false,
+                required: false,
+                include:[{
+                    attributes: ["name"],
+                    model: User,
+                    duplicating: false,
+                    required: false
+                }]
+            }]
+        });
         return res.json(items);
     }
 

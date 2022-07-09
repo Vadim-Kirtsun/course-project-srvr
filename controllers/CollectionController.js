@@ -4,12 +4,12 @@ const ApiError = require('../error/ApiError');
 class CollectionController {
 
     async create(reg, res, next) {
-        try{
+        try {
             const {id, name, description, subject, image} = reg.body;
-           let collection;
-            if(id === undefined){
+            let collection;
+            if (id === undefined) {
                 collection = await Collection.create({name, description, subject, image, userId: reg.user.id});
-            }else{
+            } else {
                 collection = await Collection.update({name, description, subject, image}, {where: {id}});
             }
             return res.json(collection);
@@ -20,6 +20,26 @@ class CollectionController {
 
     async getAll(reg, res) {
         const collections = await Collection.findAll({include: AddField});
+        return res.json(collections);
+    }
+
+    async getTop5(reg, res) {
+
+        const collections = await Collection.findAll({
+            attributes: {
+                include: [
+                    [Collection.sequelize.fn('COUNT', Collection.sequelize.col('items.id')), 'count']]
+            },
+            include: [{
+                attributes: [],
+                model: Item,
+                duplicating: false,
+                required: false
+            }],
+            group: ['collection.id'],
+            order: [['count', 'DESC']],
+            limit: 5
+        });
         return res.json(collections);
     }
 
@@ -37,8 +57,8 @@ class CollectionController {
         const {id} = reg.params;
         const collection = await Collection.findOne({
             where: {id},
-            include: [{model:Item, include: [Tag, AddFieldValue, Comment, Like]},
-                        AddField]
+            include: [{model: Item, include: [Tag, AddFieldValue, Comment, Like]},
+                AddField]
         });
         return res.json(collection);
     }
