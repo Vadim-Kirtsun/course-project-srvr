@@ -72,6 +72,8 @@ Like.belongsTo(Item)
 User.hasMany(Like)
 Like.belongsTo(User)
 
+Tag.hasMany(ItemTag)
+
 Item.belongsToMany(Tag, {through: ItemTag})
 Tag.belongsToMany(Item, {through: ItemTag})
 

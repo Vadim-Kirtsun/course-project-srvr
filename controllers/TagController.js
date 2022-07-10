@@ -1,6 +1,5 @@
-const { Tag } = require('../models/models');
-const ApiError = require('../error/ApiError');
-const {Item} = require("../models/models");
+
+const {Item, ItemTag, Tag} = require("../models/models");
 
 
 class TagController {
@@ -15,23 +14,32 @@ class TagController {
             if(!tag){
                 tag = await Tag.create(tags[i]);
             }
-            const item = await Item.findOne({where: {id: itemId}, include: {model: Tag}})
+            await Item.findOne({where: {id: itemId}, include: {model: Tag}})
 
-            console.log(tag.dataValues.id);
-            console.log(tag.dataValues.name);
-            console.log(item.tags);
-            console.log(!item);
-
-            /*if(item){
-                tag.addItems(Item.findOne({where: {id: itemId}}).dataValues);
-                tag.save();
-            }*/
         };
         return res.json(tag);
     }
 
     async getAll(reg, res) {
         const tags = await Tag.findAll();
+        return res.json(tags);
+    }
+    async getTagsWithItemCount(reg, res) {
+        const tags = await Tag.findAll({
+            attributes: {
+                include: [
+                    [Tag.sequelize.fn('COUNT', Tag.sequelize.col('item_tags.itemId')), 'count']]
+            },
+            include: [{
+                attributes: [],
+                model: ItemTag,
+                duplicating: false,
+                required: false
+            }
+              ],
+            group: ['tag.id'],
+            order: [['count', 'DESC']],
+        });
         return res.json(tags);
     }
 

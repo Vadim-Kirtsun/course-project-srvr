@@ -5,7 +5,6 @@ const {Comment} = require('../models/models');
 class CommentController {
 
     async create(reg, res) {
-        console.log(reg.body);
         const {id, text, userId, itemId} = reg.body;
         if (id === undefined){
             const data = await Comment.create({text, userId, itemId});
